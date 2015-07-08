@@ -32,7 +32,7 @@ class Comparator
 			$items_cost_map[$cost] = array();
 			foreach($keys as $key)
 			{
-				$items_cost_map[$cost] = $this->getResultItems($key);
+				$items_cost_map[$cost] = $this->getResultItem($key);
 			}
 		}
 

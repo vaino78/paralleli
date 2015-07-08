@@ -28,7 +28,7 @@ class IntegrityException extends Exception
 			$sum[$cmp][] = $position;
 		}
 
-		$result = [];
+		$result = array();
 		foreach($sum as $positions)
 		{
 			$item = new Result($this->item->getLength(), $this->item->getItem());

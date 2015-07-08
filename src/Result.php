@@ -26,9 +26,9 @@ class Result
 			throw new Exception(sprintf('Position %u is already set', $position));
 		}
 
-		if($position => $this->max_length)
+		if($position >= $this->max_length)
 		{
-			throw new Exception('Incorrect position of %u', $position);
+			throw new Exception(sprintf('Incorrect position of %u', $position));
 		}
 
 		$this->positions[$position] = $value;
