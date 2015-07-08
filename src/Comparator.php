@@ -116,6 +116,26 @@ class Comparator
 
 	private function itemCmp($a, $b)
 	{
+		$intersect = ($a->cost() > $b->cost()) 
+			? array_intersect($a->getPositions(), $b->getPositions())
+			: array_intersect($b->getPositions(), $a->getPositions());
+
+		if(empty($intersect))
+			return 0;
+
+		$result = array();
+		foreach($intersect as $position)
+		{
+			$result[$position] = ($a->getPosition($position) > $b->getPosition($position))
+				? 1
+				: -1;
+		}
+
+		$min = min($result);
+		if($min == max($result))
+			return $min;
+
+		
 	}
 
 	private function getHalfPosition($left, $right)

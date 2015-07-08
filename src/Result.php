@@ -34,6 +34,16 @@ class Result
 		$this->positions[$position] = $value;
 	}
 
+	public function getPositions()
+	{
+		return array_keys($this->positions);
+	}
+
+	public function getPosition($position)
+	{
+		return isset($this->positions[$position]) ? $this->positions[$position] : null;
+	}
+
 	public function setItem($item)
 	{
 		if(!empty($this->item))
@@ -42,5 +52,20 @@ class Result
 		}
 
 		$this->item = $item;
+	}
+
+	public function cost()
+	{
+		return count($this->positions);
+	}
+
+	public function getLength()
+	{
+		return $this->max_length;
+	}
+
+	public function getItem()
+	{
+		return $this->item;
 	}
 }
