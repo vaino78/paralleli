@@ -37,12 +37,32 @@ class Comparator
 		}
 
 		$result = array();
-		foreach($items_cost_map as $cost => $items)
+		for($i = max(array_keys($items_cost_map)); $i > 1; $i--)
 		{
-			foreach($items as $item)
+			if(empty($items_cost_map[$i]))
+				continue;
+
+			foreach($items_cost_map[$i] as $item)
 			{
-				$i = $this->getPositionToInsert($result, $item);
-				array_splice($result, $i, 0, array($item));
+				try
+				{
+					$i = $this->getPositionToInsert($result, $item);
+					array_splice($result, $i, 0, array($item));
+				}
+				catch(IntegrityException $e)
+				{
+					$splited_items = $e->getSplitedItems();
+					foreach($splited_items as $splited)
+					{
+						$split_cost = $splited->cost();
+						if($split_cost <= 1)
+							continue;
+
+						if(!isset($items_cost_map[$split_cost]))
+							$items_cost_map[$split_cost] = array();
+						$items_cost_map[$split_cost][] = $splited;
+					}
+				}
 			}
 		}
 
@@ -135,7 +155,7 @@ class Comparator
 		if($min == max($result))
 			return $min;
 
-		
+		throw new IntegrityException($b, $result);
 	}
 
 	private function getHalfPosition($left, $right)
