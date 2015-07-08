@@ -32,7 +32,7 @@ class Comparator
 			$items_cost_map[$cost] = array();
 			foreach($keys as $key)
 			{
-				$items_cost_map[$cost] = $this->getResultItem($key);
+				$items_cost_map[$cost][] = $this->getResultItem($key);
 			}
 		}
 
@@ -46,8 +46,8 @@ class Comparator
 			{
 				try
 				{
-					$i = $this->getPositionToInsert($result, $item);
-					array_splice($result, $i, 0, array($item));
+					$ins = $this->getPositionToInsert($result, $item);
+					array_splice($result, $ins, 0, array($item));
 				}
 				catch(IntegrityException $e)
 				{
@@ -122,14 +122,14 @@ class Comparator
 			$cmp = $this->itemCmp($arr[$half], $resultItem);
 			if($cmp > 0)
 			{
-				$right = $half;
+				$right = ($right > $half) ? $half : ($right - 1);
 			}
 			elseif($cmp < 0)
 			{
 				$left = $half + 1;
 			}
 		}
-		while($half > $left);
+		while($right >= $left);
 
 		return $left;
 	}
