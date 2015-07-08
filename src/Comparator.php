@@ -93,14 +93,35 @@ class Comparator
 		if(empty($arr))
 			return 0;
 
-		
+		$left = 0;
+		$right = count($arr) - 1;
+
+		do
+		{
+			$half = $this->getHalfPosition($left, $right);
+			$cmp = $this->itemCmp($arr[$half], $resultItem);
+			if($cmp > 0)
+			{
+				$right = $half;
+			}
+			elseif($cmp < 0)
+			{
+				$left = $half + 1;
+			}
+		}
+		while($half > $left);
+
+		return $left;
 	}
 
 	private function itemCmp($a, $b)
 	{
 	}
 
-	private function getHalfPosition(&$arr, $left, $right)
+	private function getHalfPosition($left, $right)
 	{
+		if($left == $right)
+			return $left;
+		return floor(($right - $left) / 2) + $left;
 	}
 }
