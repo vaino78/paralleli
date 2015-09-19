@@ -6,12 +6,30 @@ use \Exception;
 
 class Result
 {
+	/**
+	 * @private array
+	 */
 	private $item;
 
+	/**
+	 * @private array
+	 */
 	private $positions = array();
 
+	/**
+	 * @private int
+	 */
 	private $max_length;
 
+	/**
+	 * @private int
+	 */
+	private $similar = 0;
+
+	/**
+	 * @param int $length
+	 * @param array|null $item
+	 */
 	function __construct($length, $item = null)
 	{
 		$this->max_length = $length;
@@ -67,5 +85,35 @@ class Result
 	public function getItem()
 	{
 		return $this->item;
+	}
+
+	/**
+	 * @param int $position
+	 * @return boolean
+	 */
+	public function isSimilar($position)
+	{
+		return !!($this->similar & $this->posToMask($position));
+	}
+
+	/**
+	 * @param int $position
+	 * @param int $similar
+	 */
+	public function setSimilar($position, $similar)
+	{
+		$this->similar = ($similar)
+			? ($this->similar | $this->posToMask($position))
+			: ($this->similar & ~$this->posToMask($position));
+	}
+
+	/**
+	 * @private
+	 * @param int $position
+	 * @return int
+	 */
+	private function posToMask($position)
+	{
+		return pow(2, $position);
 	}
 }
